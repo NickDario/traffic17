@@ -1,3 +1,7 @@
+/*
+	This file configures express 
+*/
+
 var fs = require('fs');
 var request = require('request');
 var http = require('http');
@@ -7,12 +11,9 @@ var express = require('express');
 var bodyParser = require('body-parser');
 
 //	Retrieve config 
-var config = ini.parse(fs.readFileSync(__dirname+'/src/config.ini', 'utf8'));
+var config = ini.parse(fs.readFileSync(__dirname+'/../config.ini', 'utf8'));
 
-//	Create App
-var app = express();
-
-//	Setup App
+app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.get('/', function(req, res, next){
@@ -135,23 +136,6 @@ console.log('callSendAPI');
   });  
 }
 
-//	Generate SSL credentials
-var privateKey = fs.readFileSync(__dirname+'/cred/'+config.ssl.key, 'utf8')
-var certificate = fs.readFileSync(__dirname+'/cred/'+config.ssl.crt, 'utf8');
-var authority  = fs.readFileSync(__dirname+'/cred/'+config.ssl.pem, 'utf8');
-var credentials = {
-	key: privateKey, 
-	cert: certificate, 
-	ca: authority,
-	passphrase: '5unshine'
-};
 
-
-var traffic = require('server');
-
-//	Turn on server
-var httpsServer = https.createServer(credentials, traffic.app).listen(config.port.https, function(){
-	console.log('listening on *443');
-});
-
+exports.app = app;
 

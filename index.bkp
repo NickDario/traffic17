@@ -146,11 +146,8 @@ var credentials = {
 	passphrase: '5unshine'
 };
 
-
-var traffic = require('server');
-
 //	Turn on server
-var httpsServer = https.createServer(credentials, traffic.app).listen(config.port.https, function(){
+var httpsServer = https.createServer(credentials, app).listen(config.ports.ssl, function(){
 	console.log('listening on *443');
 });
 

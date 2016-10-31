@@ -1,0 +1,7 @@
+1. Add rules:
+	ssl: 443->50344
+	http: 80->50008
+
+2. Open destination ports
+3. 
+
