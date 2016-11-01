@@ -6,12 +6,9 @@ var fs = require('fs');
 var request = require('request');
 var http = require('http');
 var https = require('https');
-var ini = require('ini');
 var express = require('express');
 var bodyParser = require('body-parser');
-
-//	Retrieve config 
-var config = ini.parse(fs.readFileSync(__dirname+'/../config.ini', 'utf8'));
+var config = require('./config');
 
 app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
