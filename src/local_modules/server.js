@@ -2,21 +2,29 @@
 	This file configures express 
 */
 
-var fs = require('fs');
-var request = require('request');
-var http = require('http');
-var https = require('https');
-var express = require('express');
-var bodyParser = require('body-parser');
-var config = require('./config');
+var fs          = require('fs');
+var request     = require('request');
+var http        = require('http');
+var https       = require('https');
+var express     = require('express');
+var bodyParser  = require('body-parser');
+var config      = require('./config');
+var database    = require('./database');
 
+//  Instantiate app
 app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+//  Add Routers
 app.get('/', function(req, res, next){
-	res.writeHead(200);
-	res.end('hello world\n');
+    app.models.alerts.find().exec(function(err, models){
+        if(err) return res.json({err:err}, 500);
+        res.json(models);
+    });
 });
+
+//  Add Facebook webhook handler
 app.post('/webhook', function(req, res, next){
 	console.log('start response');
 	var data = req.body;
@@ -134,5 +142,14 @@ console.log('callSendAPI');
 }
 
 
+////////////
+//  Initialize ORM
+////////////
+database.init(function(err, models){
+    app.models = models.collections;
+    app.connections = models.connections;
+})
+
 exports.app = app;
+
 
