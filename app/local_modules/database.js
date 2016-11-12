@@ -31,8 +31,8 @@ function Database()
     //  Models
     /////////////   
     this.models = {
-        "SubUserAlerts"  : require('./models/SubUserAlert'),
-        "Alert"        : require('./models/Alerts')
+        "SubUserAlerts"  : require('../models/SubUserAlert'),
+        "Alert"        : require('../models/Alerts')
     }
 }
 

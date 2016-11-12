@@ -1,5 +1,5 @@
 /*
-	This file configures express 
+	This file configures express and applies the waterline orm wrapper found in database.js
 */
 
 var fs          = require('fs');
@@ -8,8 +8,8 @@ var http        = require('http');
 var https       = require('https');
 var express     = require('express');
 var bodyParser  = require('body-parser');
-var config      = require('./config');
-var database    = require('./database');
+var config      = require('config');
+var database    = require('database');
 
 //  Instantiate app
 app = express();
@@ -23,6 +23,19 @@ app.get('/', function(req, res, next){
         res.json(models);
     });
 });
+
+app.get('/new-alert', function(req, res, next) {
+    var alert_name = req.query.name;
+    app.models.alerts.create({'name':alert_name}).exec(function(err, records){
+        if(err){
+            console.log(err);
+        }
+        if(records) {
+            console.log(records);
+        }
+    });
+});
+
 
 //  Add Facebook webhook handler
 app.post('/webhook', function(req, res, next){
