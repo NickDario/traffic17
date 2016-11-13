@@ -10,6 +10,7 @@ var express     = require('express');
 var bodyParser  = require('body-parser');
 var config      = require('config');
 var database    = require('database');
+var alertmanager= require('alertmanager');
 
 //  Instantiate app
 app = express();
@@ -158,10 +159,8 @@ console.log('callSendAPI');
 ////////////
 //  Initialize ORM
 ////////////
-database.init(function(err, models){
-    app.models = models.collections;
-    app.connections = models.connections;
-})
+database.start();
+app.models = database.models;
 
 exports.app = app;
 

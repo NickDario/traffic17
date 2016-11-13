@@ -14,9 +14,23 @@
     └───────────────────────── second       (0 - 59, OPTIONAL)
 
 */
-var scheduler = require('node-schedule');
+var schedule = require('node-schedule');
 var notify    = require('./notify');
+var config    = require('./config');
+var db        = require('./database');
 
-schedules.scheduleJob('5 * * * * *');
+var rule = new schedule.RecurrenceRule();
+rule.second = [0, 5, 10, 15, 20,25,30,35,40,45,50,55];
+
+db.start();
+
+schedule.scheduleJob(rule,function()
+{   
+    notify.simple(config.test.userid, 'one');
+});
+schedule.scheduleJob(rule,function()
+{   
+    notify.simple(config.test.userid, 'two');
+});
 
 

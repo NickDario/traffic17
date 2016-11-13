@@ -10,6 +10,18 @@ var Alerts = Waterline.Collection.extend({
             type:          'string',
             required:       true
         }, 
+        schedule_default: {
+            type:   'text'  //  cron format
+        },
+        script: {
+            type:   'string'    //  path of alert script
+        },
+    
+        //  RELATIONS
+        usersubs: {
+            collection: 'subuseralerts',
+            via: 'alert'
+        }
     },
 });
 

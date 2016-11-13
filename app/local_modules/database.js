@@ -3,6 +3,7 @@ var Waterline = require('waterline');
 //var psqlAdapter = require('waterline-postgresql');    //  Doesn't seem to pass tests. No documentation.
 var psqlAdapter = require('sails-postgresql');
 var config = require('./config');
+var fs = require('fs');
 /**
     @function Database(config){}
     This function acts as a wrapper for setting up the waterline ORM.
@@ -30,25 +31,38 @@ function Database()
     /////////////
     //  Models
     /////////////   
-    this.models = {
-        "SubUserAlerts"  : require('../models/SubUserAlert'),
-        "Alert"        : require('../models/Alerts')
-    }
+    this.models = {};
+    this.initialized = false;
 }
 
 //  Initialization function.
 //
 //  callback = function(err,models){}
-Database.prototype.init = function(callback, models)
+Database.prototype.start = function()
 {
-    models = models || this.models;
-    for(model in models){
-        this.db.loadCollection(this.models[model]);
-    }
-    
-    this.db.initialize(this.options, callback);
+    fs
+      .readdirSync(__dirname + '/../models')
+      .filter(function(file) {
+        return (file.indexOf(".") !== 0);
+      })
+      .forEach(function(file) {
+        var model = require(__dirname + '/../models/'+file);
+        this.db.loadCollection(model);
+      }.bind(this));
+
+    this.db.initialize(this.options, function(err, ontology){
+        for(var model in ontology.collections){
+            console.log(model);
+            this.models[model] = ontology.collections[model];
+        }
+    }.bind(this));
+    this.initialized = true;
 }
 
+
 exports = module.exports = new Database();
+
+
+
 
 
