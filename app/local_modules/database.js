@@ -38,8 +38,12 @@ function Database()
 //  Initialization function.
 //
 //  callback = function(err,models){}
-Database.prototype.start = function()
+Database.prototype.start = function(callback)
 {
+    if(this.initialized){
+        return true;
+    }
+    
     fs
       .readdirSync(__dirname + '/../models')
       .filter(function(file) {
@@ -49,14 +53,14 @@ Database.prototype.start = function()
         var model = require(__dirname + '/../models/'+file);
         this.db.loadCollection(model);
       }.bind(this));
-
-    this.db.initialize(this.options, function(err, ontology){
+    
+    this.db.initialize(this.options, (err, ontology) => {
         for(var model in ontology.collections){
             console.log(model);
             this.models[model] = ontology.collections[model];
         }
-    }.bind(this));
-
+        callback(err, ontology);
+    });
     this.initialized = true;
 }
 

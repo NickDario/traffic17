@@ -10,7 +10,7 @@ var express      = require('express');
 var bodyParser   = require('body-parser');
 var config       = require('config');
 var database     = require('database');
-var AlertManager = require('alertmanager');
+var alertmanager = require('alertmanager');
 
 //  Instantiate app
 app = express();
@@ -159,12 +159,12 @@ console.log('callSendAPI');
 ////////////
 //  Initialize ORM
 ////////////
-database.start();
-app.alerts = new AlertManager();
-app.alerts.refresh();
-app.models = database.models;
+database.start((err, ontology) => {
+    app.alerts = alertmanager;
+    app.alerts.refresh();
+    app.models = database.models;
+});
 
 
 exports.app = app;
-
 

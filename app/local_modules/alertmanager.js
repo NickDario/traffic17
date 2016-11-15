@@ -13,7 +13,11 @@ function AlertManager()
 {
     this.alerts   = alerts;
     this.database = database;
-    this.database.start();
+//    this.database.start();
+}
+
+AlertManager.prototype.setDatabase = function(db) {
+    this.database = db;
 }
 
 AlertManager.prototype.refresh = function()
@@ -35,9 +39,10 @@ AlertManager.prototype.refresh = function()
             var schedule   = usersub[i].schedule();
             var options = {
                 mode: 'text',
-                scriptPath: '/home/tsuga/traffic17/alerts'
+                scriptPath: config.alerts.alertpath
             };
-            var pythonscript = PythonShell.run.bind(this, 'test.py', options, (err, response)=>{notify.simple(config.test.userid, response[0]);});
+            console.log(scriptname);
+            var pythonscript = PythonShell.run.bind(this, scriptname, options, (err, response)=>{notify.simple(config.test.userid, response[0]);});
             this.alerts.scheduleOne(pythonscript, schedule)
         }
     });
