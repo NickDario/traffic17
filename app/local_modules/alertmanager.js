@@ -33,11 +33,17 @@ AlertManager.prototype.refresh = function()
         for(var i=usersub.length;i --;) {
             var scriptname = usersub[i].alert.script;
             var schedule   = usersub[i].schedule();
-            this.alerts.scheduleOne(PythonShell.run.bind(null, scriptname, notify.simple), schedule); 
+            var options = {
+                mode: 'text',
+                scriptPath: '/home/tsuga/traffic17/alerts'
+            };
+            var pythonscript = PythonShell.run.bind(this, 'test.py', options, (err, response)=>{notify.simple(config.test.userid, response[0]);});
+            this.alerts.scheduleOne(pythonscript, schedule)
         }
     });
 }
 
 
 exports = module.exports = new AlertManager();
+
 

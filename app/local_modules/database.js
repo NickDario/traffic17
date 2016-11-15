@@ -56,6 +56,7 @@ Database.prototype.start = function()
             this.models[model] = ontology.collections[model];
         }
     }.bind(this));
+
     this.initialized = true;
 }
 

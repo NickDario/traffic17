@@ -30,10 +30,8 @@ function Alerts()
 
 **/
 Alerts.prototype.scheduleOne = function(task, period) {
-    console.log(period);
-    var job = this.schedule.scheduleJob(period, function(){
-        console.log('running');
-    });
+    console.log('new job:' + task);
+    var job = this.schedule.scheduleJob(period, task);
     this.jobs.push(job);
 };
 
