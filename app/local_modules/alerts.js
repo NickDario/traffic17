@@ -14,14 +14,14 @@
     └───────────────────────── second       (0 - 59, OPTIONAL)
 
 */
-var schedule = require('node-schedule');
+var cron      = require('cron');
 var notify    = require('./notify');
 var config    = require('./config');
 var db        = require('./database');
 
 function Alerts()
 {
-    this.schedule = schedule;
+    this.cron = cron;
     this.jobs = [];
 }
 
@@ -30,8 +30,9 @@ function Alerts()
 
 **/
 Alerts.prototype.scheduleOne = function(task, period) {
-    console.log('new job:' + task);
-    var job = this.schedule.scheduleJob(period, task);
+    var job = new this.cron.CronJob(period, task);
+    //var job = this.schedule.scheduleJob(period, task);
+    job.start();
     this.jobs.push(job);
 };
 
@@ -41,7 +42,7 @@ Alerts.prototype.scheduleOne = function(task, period) {
 **/
 Alerts.prototype.clearAll = function() {
     for(var job in this.jobs){
-        job.cancel();
+        job.stop();
     }
 };
 

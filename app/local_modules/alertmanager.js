@@ -36,12 +36,13 @@ AlertManager.prototype.refresh = function()
     subs.then((usersub) => {
         for(var i=usersub.length;i --;) {
             var scriptname = usersub[i].alert.script;
+            console.log(usersub[i].alert.schedule_default);
             var schedule   = usersub[i].schedule();
             var options = {
                 mode: 'text',
                 scriptPath: config.alerts.alertpath
             };
-            console.log(scriptname);
+            console.log(scriptname +' scheduled at '+ schedule);
             var pythonscript = PythonShell.run.bind(this, scriptname, options, (err, response)=>{notify.simple(config.test.userid, response[0]);});
             this.alerts.scheduleOne(pythonscript, schedule)
         }
