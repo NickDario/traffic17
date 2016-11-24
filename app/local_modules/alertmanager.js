@@ -1,7 +1,7 @@
-var config = require('./config');
-var notify = require('./notify');
-var database = require('./database');
-var alerts = require('./alerts');
+var config = require('config');
+var notify = require('notify');
+var database = require('database');
+var alerts = require('alerts');
 var PythonShell = require('python-shell');
 
 //
@@ -13,11 +13,6 @@ function AlertManager()
 {
     this.alerts   = alerts;
     this.database = database;
-//    this.database.start();
-}
-
-AlertManager.prototype.setDatabase = function(db) {
-    this.database = db;
 }
 
 AlertManager.prototype.refresh = function()
