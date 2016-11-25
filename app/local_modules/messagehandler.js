@@ -39,8 +39,8 @@ MessageHandler.prototype.handleEvent = function(messageEvent)
                     };
                     var pythonscript = PythonShell.run.bind(this, scriptname, options, (err, response)=>{notify.simple(uid, response[0] +'\n'+ response[1]);});
                     pythonscript();
+                    this.notify.simple(uid, 'triggered '+scriptname);
                 });
-                this.notify.simple(uid, 'triggered '+scriptname);
             }
             break;
         default:
