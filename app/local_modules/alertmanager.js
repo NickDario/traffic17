@@ -38,7 +38,7 @@ AlertManager.prototype.refresh = function()
                 scriptPath: config.alerts.alertpath
             };
             console.log(scriptname +' scheduled at '+ schedule);
-            var pythonscript = PythonShell.run.bind(this, scriptname, options, (err, response)=>{notify.simple(config.test.userid, response[0]);});
+            var pythonscript = PythonShell.run.bind(this, scriptname, options, (err, response)=>{notify.simple(config.test.userid, response[0] + '\n' + response[1]);});
             this.alerts.scheduleOne(pythonscript, schedule)
         }
     });
