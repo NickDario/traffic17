@@ -56,8 +56,9 @@ app.post('/webhook', function(req, res, next){
                     app.handler.handleEvent(messagingEvent);
 				  //receivedMessage(messagingEvent);
 				} else {
-				  	console.log("Webhook received unknown messagingEvent: ", messagingEvent);
-					console.log('Of type ' + messagingEvent.message);
+                    console.log('unknown messaging event');
+				  	//console.log("Webhook received unknown messagingEvent: ", messagingEvent);
+					//console.log('Of type ' + messagingEvent.message);
 				}
 			});
 		});
@@ -115,7 +116,6 @@ console.log('sendTestMessage');
 }
 
 function callSendAPI(messageData) {
-  console.log('callSendAPI');
   request({
     uri: 'https://graph.facebook.com/v2.6/me/messages',
     qs: { access_token: config.token.oauth},

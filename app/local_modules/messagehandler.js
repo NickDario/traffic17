@@ -45,14 +45,17 @@ MessageHandler.prototype.handleEvent = function(messageEvent)
             break;
         case 'list':
             if(command.length < 2){
-                var message = 'Available Alerts:\n';
+                //var message = 'Available Alerts:\n';
                 var alerts = this.database.models.alerts.find()
                     .then((alerts) => {return alerts;});
-                alerts.each((alert) => {
-                    message += alerts.name + '\n';
+                alerts.each((alrt) => {
+                    message = alrt.name;
+                    console.log(message);
+                    this.notify.simple(uid, message);
                 });                
-                this.notify.simple(uid, message);
+                //console.log(message);
             }
+            break;
         default:
             this.notify.simple(uid, 'Not a valid command');
     }
