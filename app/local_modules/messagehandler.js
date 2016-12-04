@@ -43,6 +43,16 @@ MessageHandler.prototype.handleEvent = function(messageEvent)
                 });
             }
             break;
+        case 'list':
+            if(command.length < 2){
+                var message = 'Available Alerts:\n';
+                var alerts = this.database.models.alerts.find()
+                    .then((alerts) => {return alerts;});
+                alerts.each((alert) => {
+                    message += alerts.name + '\n';
+                });                
+                this.notify.simple(uid, message);
+            }
         default:
             this.notify.simple(uid, 'Not a valid command');
     }

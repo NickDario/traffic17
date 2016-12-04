@@ -69,7 +69,7 @@ app.post('/webhook', function(req, res, next){
 		// successfully received the callback. Otherwise, the request will time out.
 		res.sendStatus(200);
 	} else if(req.query['hub.verify_token'] === config.token.appid) {
-	        res.end(req.query['hub.challenge']);
+	  res.end(req.query['hub.challenge']);
 	} 
 });
 
@@ -142,11 +142,12 @@ function callSendAPI(messageData) {
 //  Initialize ORM
 //////////////////////
 database.start((err, ontology) => {
+  //  Attach message handling module
     app.handler = messagehandler;
-
+  //  Attach alert queuing module
     app.alerts = alertmanager;
     app.alerts.refresh();
-
+  //  Attach database
     app.models = database.models;
 });
 
