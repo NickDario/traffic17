@@ -1,5 +1,6 @@
 var notify = require('notify');
 var database = require('database');
+var convo = require('converse');
 var config = require('config');
 var PythonShell = require('python-shell');
 
@@ -7,6 +8,7 @@ MessageHandler = function()
 {   
     this.database = database;
     this.notify = notify;
+    this.convo = convo;
   //  this.parse = parser;
 }
 
@@ -15,6 +17,15 @@ MessageHandler.prototype.handleEvent = function(messageEvent)
 {
     var text = messageEvent.message.text;
     var uid  = messageEvent.sender.id;
+    var user = this.database.models.users.find({where:{fuid:uid}}).then((user)=>{
+        if(user.length == 0) {
+            var user = this.database.models.users.create({fuid:uid}).exec((err, records) => {
+                return records;
+            });
+        }
+        console.log(user);
+        return user;
+    });
     var command = text.toLowerCase().split(' ');
     switch(command[0]){
         case 'echo': 
@@ -45,12 +56,13 @@ MessageHandler.prototype.handleEvent = function(messageEvent)
             break;
         case 'list':
             if(command.length < 2){
-                //var message = 'Available Alerts:\n';
                 var alerts = this.database.models.alerts.find()
                     .then((alerts) => {return alerts;});
-                alerts.each((alrt) => {
-                    message = alrt.name;
-                    console.log(message);
+                alerts.then((alertlist) => {
+                    var message = 'The available alerts are\n';
+                    for(var i=alertlist.length;i --;){
+                        message += alertlist[i].name + '\n';
+                    }
                     this.notify.simple(uid, message);
                 });                
                 //console.log(message);
