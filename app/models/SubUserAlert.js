@@ -7,13 +7,17 @@ var SubUserAlert = Waterline.Collection.extend({
     autoPK: true,
     attributes: {
         user_id: {
-            type: 'text'
+            type: 'integer'
         },
         alert: {
             model: 'alerts',
             columnName: 'alert_id',
-            type: 'integer'
-            //type:'integer'
+            type: 'integer',
+        },
+        user: {
+            model: 'users',
+            columnName: 'user_id',
+            type: 'integer',
         },
         schedule_choice: {
             type: 'text',    //  cron format

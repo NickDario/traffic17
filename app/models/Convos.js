@@ -25,6 +25,8 @@ var Convos = Waterline.Collection.extend({
             type:'integer'
         }
     },
+    mostRecent: function(uid){},
+    getConversationsForUser: function(id){}
 });
 
 exports = module.exports = Convos;

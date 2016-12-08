@@ -1,7 +1,7 @@
-var config = require('config');
-var notify = require('notify');
-var database = require('database');
-var alerts = require('alerts');
+var config      = require('config');
+var notify      = require('notify');
+var database    = require('database');
+var alerts      = require('alerts');
 var PythonShell = require('python-shell');
 
 //
@@ -23,21 +23,25 @@ AlertManager.prototype.refresh = function()
     //  Retrieve Alerts with SubUserAlerts
     var subs = this.database.models.subuseralerts.find()
         .populate('alert')
+        .populate('user')
         .then((subs)=>{
             return subs;
         });
     
     //  Schedule new alerts
-    subs.then((usersub) => {
-        for(var i=usersub.length;i --;) {
-            var scriptname = usersub[i].alert.script;
-            var schedule   = usersub[i].schedule();
+    subs.then((usersubs) => {
+        for(var i=usersubs.length;i --;) {
+            var subscription = usersubs[i];
+            var scriptname = subscription.alert.script;
+            var schedule   = subscription.schedule();
             var options = {
                 mode: 'text',
                 scriptPath: config.alerts.alertpath
             };
             console.log(scriptname +' scheduled at '+ schedule);
-            var pythonscript = PythonShell.run.bind(this, scriptname, options, (err, response)=>{notify.simple(config.test.userid, response[0] + '\n' + response[1]);});
+            var pythonscript = PythonShell.run.bind(this, scriptname, options, (err, response) => {
+                notify.simple(subscription.user.fuid, response[0] + '\n' + response[1]);
+            });
             this.alerts.scheduleOne(pythonscript, schedule)
         }
     });

@@ -56,7 +56,7 @@ Database.prototype.start = function(callback)
     
     this.db.initialize(this.options, (err, ontology) => {
         for(var model in ontology.collections){
-            console.log(model);
+            console.log('Loading '+ model +' to app');
             this.models[model] = ontology.collections[model];
         }
         callback(err, ontology);

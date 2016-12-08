@@ -9,13 +9,13 @@ function Converse()
 
 }
 
-Converse.prototype.hears = function(uid, message){
+Converse.prototype.hear = function(uid, message){
 }
 
-Converse.prototype.replies = function(uid){
+Converse.prototype.reply = function(uid){
 }
 
-Converse.prototype.initiates = function(uid){
+Converse.prototype.initiate = function(uid){
 }
 
 

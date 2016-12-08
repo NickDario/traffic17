@@ -18,6 +18,10 @@ var Users = Waterline.Collection.extend({
         conversations: {
             collection: 'convos',
             via: 'user'
+        },
+        alertsubs: {
+            collection: 'subuseralerts', 
+            via: 'user'
         }
     },
 });
